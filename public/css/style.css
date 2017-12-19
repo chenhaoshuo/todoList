@@ -1,0 +1,176 @@
+ol, ul{
+	list-style: none;
+	padding: 0;
+}
+a{
+	text-decoration: none;
+}
+input, p{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	background: #CDCDCD;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+}
+header{
+	background: rgba(47,47,47,0.98);
+	display: flex;
+	/* align-self: center; */
+}
+
+#todoList_title{
+	flex: 0 1 auto;
+	width: 800px;
+	margin: 0 auto;
+	color: #DDD;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+#todoList_title h2{
+	color: #fb8732;
+	flex: 1;
+}
+#title{
+	flex: 0 1 300px;
+	height: 25px;
+	line-height: 25px;
+	border-radius: 6px;
+	border:none;
+	padding-left: 10px;
+	box-sizing: border-box;
+	font-weight: bold;
+	box-shadow: 2px 2px 2px #ccc;
+}
+#newMoreDataBtn, #clearAll{
+	padding: 0 5px;
+	margin: 0 0 0 10px;
+	height: 25px;
+	line-height: 25px;
+	border: 2px solid #777;
+	border-radius: 3px;
+	background: none;
+	color: #fb8732;
+}
+
+.show-container{
+	display: flex;
+	justify-content: center;
+}
+.show-container .wrap{
+	width: 800px;
+	flex: 0 1 auto;
+	/* margin: 0 auto; */
+	display: flex;
+	flex-direction: column;
+}
+#doingList, #doneList{
+	display: flex;
+	flex-direction: column;
+}
+#doingList h2, #doneList h2{
+	padding: 0;
+	margin: 10px 0;
+	color: #323232;
+}
+.doingList-title, .doneList-title{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.doingList-title span, .doneList-title span{
+	font-weight: bold;
+	color: #fb8732;
+	height: 20px;
+	line-height: 20px;
+	border-radius: 50%;
+	text-shadow: 2px 2px 2px #fff;
+}
+#doingList ol li, #doneList ol li{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #fff;
+	height: 32px;
+	line-height: 32px;
+	margin-bottom: 10px;
+	padding: 0 10px 0 20px;
+	border-radius: 3px;
+	border-left: 5px solid #629A9C;
+	transition: transform .3s linear, opacity .3s linear;
+}
+
+#doingList input, #doneList input{
+	width: 20px;
+	height: 20px;
+	padding: 10px;
+	margin-right: 10px;
+}
+#doingList p, #doneList p{
+	flex: 1;
+	text-overflow: ellipsis;
+}
+.remove{
+	background: #ccc;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	border-radius: 50%;
+	text-align: center;
+}
+.remove>span{
+	background: #ccc;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	display: inline-block;
+	border-radius: 50%;
+	text-align: center;
+	border: 2px solid #fff;
+	color: #fff;
+}
+.remove:hover{
+	background-color: #e04d4d;
+}
+.remove>span:hover{
+	color: #e04d4d;
+}
+
+
+#doneList ol li{
+	border-left: 5px solid #b3b3b3;
+}
+#doneList{
+	opacity: 0.5;
+}
+.li-click{
+	border-top: 2px solid #fb8732;
+	border-right: 2px solid #fb8732;
+	border-bottom: 2px solid #fb8732;
+}
+
+footer{
+	display: flex;
+	justify-content: center;
+}
+footer a{
+	color: #fb8732;
+	font-weight: bold;
+}
+
+/*动效*/
+.linear-out{
+	transform: translateX(-300%);
+	opacity: 0;
+}
+
+.small-li{
+	left: 500px;
+	width: 80px;
+	box-sizing: border-box;
+}
