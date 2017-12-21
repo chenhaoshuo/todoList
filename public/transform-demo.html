@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>css3变形处理</title>
+    <style>
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+            margin: 20px auto;
+            transform: rotateX(0deg);
+            text-align: center;
+        }
+        @keyframes mycolor{
+            0%{
+                background: red;
+            }
+            30%{
+                background: darkblue;
+            }
+            60%{
+                background: yellow;
+            }
+            100%{
+                background: green;
+            }
+        }
+        div:hover{
+            animation: mycolor 3s linear 1s reverse;
+        }
+
+        @keyframes fadein{
+            0%{
+                opacity: 0;
+                background-color: #fff;
+            }
+            100%{
+                opacity: 1;
+                background-color: #fff;
+            }
+        }
+        body{
+            animation-name: fadein;
+            animation-duration: 5s;
+            animation-iteration-count: 1;
+            animation-timing-function: linear;
+        }
+    </style>
+</head>
+<body>
+    <div>ni hao a</div>
+</body>
+</html>

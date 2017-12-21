@@ -174,3 +174,19 @@ footer a{
 	width: 80px;
 	box-sizing: border-box;
 }
+@keyframes fadein{
+	0%{
+		opacity: 0;
+		background-color: #CDCDCD;
+	}
+	100%{
+		opacity: 1;
+		background-color: #CDCDCD;
+	}
+}
+body{
+	animation-name: fadein;
+	animation-duration: .5s;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+}
