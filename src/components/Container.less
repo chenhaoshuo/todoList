@@ -1,0 +1,64 @@
+.show-container{
+	display: flex;
+	justify-content: center;
+}
+.wrap{
+	width: 800px;
+	flex: 0 1 auto;
+	/* margin: 0 auto; */
+	display: flex;
+	flex-direction: column;
+}
+.doingList, .doneList{
+	display: flex;
+	flex-direction: column;
+}
+.doingList h2, .doneList h2{
+	padding: 0;
+	margin: 10px 0;
+	color: #323232;
+}
+.doingList-title, .doneList-title{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.doingList-title span, .doneList-title span{
+	font-weight: bold;
+	color: #fb8732;
+	height: 20px;
+	line-height: 20px;
+	border-radius: 50%;
+	text-shadow: 2px 2px 2px #fff;
+}
+.doingList ol li, .doneList ol li{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #fff;
+	height: 32px;
+	line-height: 32px;
+	margin-bottom: 10px;
+	padding: 0 10px 0 20px;
+	border-radius: 3px;
+	border-left: 5px solid #629A9C;
+	transition: transform .3s linear, opacity .3s linear;
+}
+
+.doingList input, .doneList input{
+	width: 20px;
+	height: 20px;
+	padding: 10px;
+	margin-right: 10px;
+}
+.doingList p, .doneList p{
+	flex: 1;
+	text-overflow: ellipsis;
+}
+
+.doneList ol li{
+	border-left: 5px solid #b3b3b3;
+}
+.doneList{
+	opacity: 0.5;
+}

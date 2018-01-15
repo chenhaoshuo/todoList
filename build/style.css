@@ -12,19 +12,32 @@ p {
   padding: 0;
   margin: 0;
 }
+@keyframes reset__fadein-1kSeS {
+  0% {
+    opacity: 0;
+    background-color: #CDCDCD;
+  }
+  100% {
+    opacity: 1;
+    background-color: #CDCDCD;
+  }
+}
 body {
   background: #CDCDCD;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  animation-name: reset__fadein-1kSeS;
+  animation-duration: .5s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
 }
 header {
   background: rgba(47, 47, 47, 0.98);
   display: flex;
-  /* align-self: center; */
 }
-#todoList_title {
+.Title__todoList_title-2n2mj {
   flex: 0 1 auto;
   width: 800px;
   margin: 0 auto;
@@ -33,11 +46,11 @@ header {
   align-items: center;
   flex-wrap: wrap;
 }
-#todoList_title h2 {
+.Title__todoList_title-2n2mj h2 {
   color: #fb8732;
   flex: 1;
 }
-#title {
+.Title__todoList_title-2n2mj input {
   flex: 0 1 300px;
   height: 25px;
   line-height: 25px;
@@ -48,8 +61,7 @@ header {
   font-weight: bold;
   box-shadow: 2px 2px 2px #ccc;
 }
-#newMoreDataBtn,
-#clearAll {
+.Title__todoList_title-2n2mj button {
   padding: 0 5px;
   margin: 0 0 0 10px;
   height: 25px;
@@ -59,36 +71,66 @@ header {
   background: none;
   color: #fb8732;
 }
-.show-container {
+.ListItem__li-click-3p0k8 {
+  border-top: 2px solid #fb8732;
+  border-right: 2px solid #fb8732;
+  border-bottom: 2px solid #fb8732;
+}
+.ListItem__remove-248qp {
+  background: #ccc;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  border-radius: 50%;
+  text-align: center;
+}
+.ListItem__remove-248qp > span {
+  background: #ccc;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  display: inline-block;
+  border-radius: 50%;
+  text-align: center;
+  border: 2px solid #fff;
+  color: #fff;
+}
+.ListItem__remove-248qp:hover {
+  background-color: #e04d4d;
+}
+.ListItem__remove-248qp > span:hover {
+  color: #e04d4d;
+}
+.Container__show-container-Nf4qR {
   display: flex;
   justify-content: center;
 }
-.show-container .wrap {
+.Container__wrap-3iBUD {
   width: 800px;
   flex: 0 1 auto;
   /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
 }
-#doingList,
-#doneList {
+.Container__doingList-zd7hC,
+.Container__doneList-3mMOU {
   display: flex;
   flex-direction: column;
 }
-#doingList h2,
-#doneList h2 {
+.Container__doingList-zd7hC h2,
+.Container__doneList-3mMOU h2 {
   padding: 0;
   margin: 10px 0;
   color: #323232;
 }
-.doingList-title,
-.doneList-title {
+.Container__doingList-title-14zOP,
+.Container__doneList-title-2-TBD {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.doingList-title span,
-.doneList-title span {
+.Container__doingList-title-14zOP span,
+.Container__doneList-title-2-TBD span {
   font-weight: bold;
   color: #fb8732;
   height: 20px;
@@ -96,8 +138,8 @@ header {
   border-radius: 50%;
   text-shadow: 2px 2px 2px #fff;
 }
-#doingList ol li,
-#doneList ol li {
+.Container__doingList-zd7hC ol li,
+.Container__doneList-3mMOU ol li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -110,53 +152,29 @@ header {
   border-left: 5px solid #629A9C;
   transition: transform .3s linear, opacity .3s linear;
 }
-#doingList input,
-#doneList input {
+.Container__doingList-zd7hC input,
+.Container__doneList-3mMOU input {
   width: 20px;
   height: 20px;
   padding: 10px;
   margin-right: 10px;
 }
-#doingList p,
-#doneList p {
+.Container__doingList-zd7hC p,
+.Container__doneList-3mMOU p {
   flex: 1;
   text-overflow: ellipsis;
 }
-.remove {
-  background: #ccc;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  border-radius: 50%;
-  text-align: center;
-}
-.remove > span {
-  background: #ccc;
-  width: 15px;
-  height: 15px;
-  line-height: 15px;
-  display: inline-block;
-  border-radius: 50%;
-  text-align: center;
-  border: 2px solid #fff;
-  color: #fff;
-}
-.remove:hover {
-  background-color: #e04d4d;
-}
-.remove > span:hover {
-  color: #e04d4d;
-}
-#doneList ol li {
+.Container__doneList-3mMOU ol li {
   border-left: 5px solid #b3b3b3;
 }
-#doneList {
+.Container__doneList-3mMOU {
   opacity: 0.5;
 }
-.li-click {
-  border-top: 2px solid #fb8732;
-  border-right: 2px solid #fb8732;
-  border-bottom: 2px solid #fb8732;
+/*动效*/
+.TodoList__linear-out-17sUj {
+  transform: translateX(-300%);
+  transition: transform 0.2s linear;
+  opacity: 0;
 }
 footer {
   display: flex;
@@ -165,70 +183,4 @@ footer {
 footer a {
   color: #fb8732;
   font-weight: bold;
-}
-/*动效*/
-.linear-out {
-  transform: translateX(-300%);
-  opacity: 0;
-}
-.small-li {
-  left: 500px;
-  width: 80px;
-  box-sizing: border-box;
-}
-@keyframes fadein {
-  0% {
-    opacity: 0;
-    background-color: #CDCDCD;
-  }
-  100% {
-    opacity: 1;
-    background-color: #CDCDCD;
-  }
-}
-body {
-  animation-name: fadein;
-  animation-duration: .5s;
-  animation-iteration-count: 1;
-  animation-timing-function: linear;
-}
-body {
-  background-size: 100%;
-  width: 100%;
-}
-header h1 {
-  color: #FF7F50;
-  font-size: 40px;
-}
-header h3 {
-  color: #800080;
-  font-size: 20px;
-}
-section {
-  display: flex;
-}
-section aside {
-  flex: 0 0 100px;
-}
-section aside ul {
-  list-style: none;
-}
-section aside ul li a {
-  text-decoration: none;
-}
-section article {
-  flex: 1;
-}
-section article img {
-  box-shadow: 5px 5px 5px #666, 0 0 5px #f00;
-  width: 7.9375cm;
-}
-section article p {
-  color: blue;
-  font-size: 14px;
-}
-@media screen and (max-width: 300px) {
-  body {
-    background-color: lightblue;
-  }
 }

@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     devtool: "eval-source-map",
-    entry: __dirname + "/app/js/index.js",
+    entry: __dirname + "/src/index.js",
     output: {
         path: __dirname + "/build",
         filename: "bundle.js"
@@ -29,7 +29,7 @@ module.exports = {
                 test: /(\.less|\.css)$/,
                 use: ExtractTextPlugin.extract({
                     use: [{
-                        loader: "css-loader"
+                        loader: "css-loader?modules&localIdentName=[name]__[local]-[hash:base64:5]"
                     }, {
                         loader: "less-loader"
                     }],
@@ -42,7 +42,7 @@ module.exports = {
         new webpack.BannerPlugin("Add by shuo."),
         new ExtractTextPlugin("style.css"),
         new HtmlWebpackPlugin({
-            template: __dirname + "/app/index.tmpl.html"
+            template: __dirname + "/static/index.tmpl.html"
         })
     ]
 }
