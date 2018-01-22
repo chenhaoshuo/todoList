@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './Title.less';
+import { is } from 'immutable'
 
 class Title extends React.Component {
     constructor(props) {
@@ -7,38 +8,46 @@ class Title extends React.Component {
         this.state = { value: '' };
     }
 
-    onChange(e) {
-        this.setState({value: e.target.value});
+    shouldComponentUpdate(nextProps, nextState) {
+        const thisState = this.state;
+        if (thisState.value != nextState.value) {
+            return true;
+        }
+        return false;
     }
 
-    handleKeyDown(e) {
-        const title = this.state.value;
-        if(e.keyCode == 13){
-            if(title.trim() == ''){
-                alert("title不能为空！");
+    onChange(e) {
+        this.setState({ value: e.target.value });
+    }
+
+    onKeyDown(e) {
+        const text = this.state.value;
+        if (e.keyCode == 13) {
+            if (text.trim() == '') {
+                alert("text不能为空！");
                 return;
             }
-            this.state.value = '';
-            this.props.onKeyDown(title);
+            this.setState({ value: '' });
+            this.props.addRow(text);
         }
     }
 
     render() {
+        // console.log('title');
+        const {add_1000Rows, clear} = this.props;
         return (
-            <header>
-                <section className={styles['todoList_title']}>
-                    <h2>ToDoList</h2>
-                    <input 
-                        type="text" 
-                        placeholder="添加ToDo" 
-                        value={this.state.value} 
-                        onChange={e=>this.onChange(e)} 
-                        onKeyDown={e=>this.handleKeyDown(e)}
-                    />
-                    <button onClick={this.props.onMoreDataClick}>新增千条数据</button>
-                    <button onClick={this.props.onClearAllClick}>clear All</button>
-                </section>
-            </header>
+            <section className={styles['todoList_title']}>
+                <h2>ToDoList</h2>
+                <input
+                    type="text"
+                    placeholder="添加ToDo"
+                    value={this.state.value}
+                    onChange={e => this.onChange(e)}
+                    onKeyDown={e => this.onKeyDown(e)}
+                />
+                <button onClick={add_1000Rows}>新增千条数据</button>
+                <button onClick={clear}>clear All</button>
+            </section>
         )
     }
 }

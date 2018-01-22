@@ -1,54 +1,44 @@
 import React from "react";
 import styles from "./ListItem.less";
 import classNames from "classnames";
+import { is } from "immutable"
 
 class ListItem extends React.Component {
-    shouldComponentUpdate(nextProps = {}) {
-        return true;
-        const thisProps = this.props || {};
-        if (Object.keys(thisProps).length !== Object.keys(nextProps).length) {
+    constructor(props) {
+        super(props)
+    }
+
+    shouldComponentUpdate(nextProps) {
+        const thisProps = this.props;
+        if (!is(thisProps.item, nextProps.item)) {
             return true;
         }
-        if (!is(thisProps['value'], nextProps['value']) || !is(thisProps['whichLiClick'], nextProps['whichLiClick'])) {
+        if(!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), nextProps.selectId)){
+            return true;
+        }
+        if(!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), thisProps.selectId)){
             return true;
         }
         return false;
     }
 
     render() {
-        // console.log('ListItem.render', this.props.value);
-        const todoItem = this.props.value;
-        const isClicked = todoItem.index == this.props.whichLiClick;
+        console.log('ListItem.render');
+        const { item, finish, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
+        const id = item.get('id');
         const interator = {
             draggable: "true",
-            onDragStart: this.props.onDragStart,
-            onDragOver: this.props.onDragOver,
-            onDrop: this.props.onDrop,
+            onDragStart: (e) => dragStart(e, id),
+            onDragOver: dragOver,
+            onDrop: (e) => drop(e, id),
         }
-        if (!this.props.value.isFinished) {
-            return (
-                <li 
-                    index = {todoItem.index} 
-                    className = {classNames({[styles['li-click']]: isClicked})}
-                    {...interator}
-                >
-                    <input type="checkbox" defaultChecked={false} onClick={this.props.onCheckboxClick} />
-                    <p onClick={this.props.onClick}>{todoItem.title}</p>
-                    <a href="###" className={styles['remove']} onClick={this.props.onRemoveClick}><span>-</span></a>
-                </li>
-            )
-        } else {
-            return (
-                <li 
-                    index={todoItem.index} 
-                    className={classNames({[styles['li-click']]: isClicked})}
-                >
-                    <input type="checkbox" defaultChecked={true} onClick={this.props.onCheckboxClick} />
-                    <p onClick={this.props.onClick}>{todoItem.title}</p>
-                    <a href="###" className={styles['remove']} onClick={this.props.onRemoveClick}><span>-</span></a>
-                </li>
-            )
-        }
+        return (
+            <li index={item.get('id')} className={classNames({ [styles['li-click']]: item.get('id')===selectId })} {...(isFinished ? null : interator) }>
+                <input type="checkbox" defaultChecked={isFinished ? true : false} onClick={finish} />
+                <p onClick={selectRow}>{item.get('text')}</p>
+                <div className={styles['remove']} onClick={deleteRow}><span>-</span></div>
+            </li>
+        )
     }
 }
 

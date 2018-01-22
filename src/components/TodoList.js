@@ -1,142 +1,134 @@
 import React from "react";
-import Util from "./../util/Util";
+import storage from "./../util/storage";
 import Title from "./Title";
 import Container from "./Container";
 import styles from "./TodoList.less";
 import classNames from "classnames";
+import { fromJS, Map, List } from "immutable";
 
 class TodoList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            todoList: Util.StorageGetter("todoList") || [],
-            totalThings: Util.StorageGetter("totalThings") || 0,
+            todoList: fromJS(storage.get("todoList") || []),
+            selectId: '',
         }
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-        this.handleMoreDataClick = this.handleMoreDataClick.bind(this);
-        this.handleClearAllClick = this.handleClearAllClick.bind(this);
-        this.handleCheckboxClick = this.handleCheckboxClick.bind(this);
-        this.handleRemoveClick = this.handleRemoveClick.bind(this);
-        //拖拽
-        this.handleDragStart = this.handleDragStart.bind(this);
-        this.handleDragOver = this.handleDragOver.bind(this);
-        this.handleDrop = this.handleDrop.bind(this);
     }
 
-    handleKeyDown(title) {
-        let index = this.state.totalThings;
-        const todoItem = { title: title, index: index, isFinished: false };
-        Util.StorageSetter("totalThings", index++);
-        Util.StorageAdder("todoList", todoItem);
-        const todoList = [...this.state.todoList, todoItem]
-        this.setState({
-            todoList: todoList,
-            totalThings: index,
-        });
+    newGuid() {
+        var guid = "";
+        for (var i = 1; i <= 32; i++) {
+            var n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+            if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                guid += "-";
+        }
+        return guid;
     }
 
-    handleMoreDataClick() {
-        console.time("新增1000条");
-        let index = this.state.totalThings;
-        let arr = [];
-        for (let i = 0; i < 1000; i++) {
-            arr.push({ title: index, index: index++, isFinished: false });
-        }
+    addRow(text) {
+        let id = this.newGuid();
         let todoList = this.state.todoList;
-        todoList.push(...arr);
-        Util.StorageSetter("todoList", todoList);
-        Util.StorageSetter("totalThings", index);
-        this.setState({
-            todoList: todoList,
-        });
+        const todo = Map({ text: text, id: id, isFinished: false });
+        storage.add("todoList", todo);
+        todoList = todoList.push(todo);
+        this.setState({ todoList: todoList });
+    }
+
+    add_1000Rows() {
+        console.time("新增1000条");
+        let id = '';
+        let todoList = this.state.todoList;
+        for (let i = 0; i < 1000; i++) {
+            id = this.newGuid();
+            todoList = todoList.push(Map({ text: id, id: id, isFinished: false }));
+        }
+        storage.set("todoList", todoList);
+        this.setState({ todoList: todoList });
         console.timeEnd("新增1000条");
     }
 
-    handleClearAllClick() {
+    clear() {
         if (confirm("确定要清除所有项目吗？")) {
             localStorage.removeItem("todoList_todoList");
-            localStorage.removeItem("todoList_totalThings");
+            this.setState({ todoList: List() });
         }
-        this.setState({
-            todoList: [],
-            totalThings: 0,
-        });
     }
 
-    handleCheckboxClick(targetIndex) {
+    finish(targetId) {
         let todoList = this.state.todoList;
-        todoList.forEach((todoItem) => {
-            if (todoItem.index == targetIndex) {
-                todoItem.isFinished = !todoItem.isFinished;
-                return;
-            }
-        });
-        Util.StorageSetter("todoList", todoList);
-        this.setState({
-            todoList: todoList,
-        });
+        let index = todoList.findIndex(item => item.get('id') === targetId);
+        let todo = todoList.get(index);
+        todoList = todoList.setIn([index, 'isFinished'], !todo.get('isFinished'));
+        this.setState({ todoList: todoList });
+        storage.set("todoList", todoList);
     }
 
-    handleRemoveClick(targetIndex) {
+    deleteRow(targetId) {
         let todoList = this.state.todoList;
-        todoList.forEach((todoItem, index, todoList) => {
-            if (todoItem.index == targetIndex) {
-                todoList.splice(index, 1);
-                Util.StorageDeleter("todoList", targetIndex);
-                return;
-            }
-        });
-        this.setState({
-            todoList: todoList,
-        });
-        // TODO:　动画
-        // element.className = classNames({[styles['linear-out']]: true});
-        // setTimeout(() => this.setState({
-        //     todoList: Util.StorageGetter("todoList"),
-        // }), 200);
+        let index = todoList.findIndex(item => item.get('id') === targetId);
+        todoList = todoList.delete(index);
+        storage.set("todoList", todoList);
+        this.setState({ todoList: todoList });
     }
-    
-    handleDragStart(sourceIndex, e) {
-        e.dataTransfer.setData("sourceIndex", sourceIndex);
+
+    selectRow(targetId) {
+        if (this.state.selectId === targetId) targetId = '';
+        this.setState({ selectId: targetId });
     }
-    handleDragOver(e) {
+
+    dragStart(e, sourceId) {
+        e.dataTransfer.setData("sourceId", sourceId);
+    }
+    dragOver(e) {
         e.preventDefault();
     }
-    handleDrop(targetIndex, e) {
-        const sourceIndex = e.dataTransfer.getData("sourceIndex");
-        const movingItem = Util.StorageDeleter("todoList", sourceIndex);
-        let todoList = Util.StorageGetter("todoList");
-        for(let [index, thing] of todoList.entries()){
-			if(thing.index == targetIndex){
-				todoList.splice(index+1, 0, movingItem);
-				break;
-			}
-        }
-        Util.StorageSetter("todoList", todoList);
-        this.setState({
-            todoList: todoList,
-        });
+    drop(e, targetId) {
+        const sourceId = e.dataTransfer.getData("sourceId");
+        let todoList = this.state.todoList;
+        const from = todoList.findIndex(item => item.get('id') === sourceId);
+        const to = todoList.findIndex(item => item.get('id') === targetId);
+        const item = todoList.get(from);
+        todoList = todoList.delete(from);
+        let index = from < to ? to : (to + 1);
+        todoList = todoList.insert(index, item);
+        storage.set("todoList", todoList);
+        this.setState({ todoList: todoList });
     }
 
     render() {
+        console.log(this.state.todoList.toJS());
+        const todoList = this.state.todoList;
+        const prop = {
+            selectId: this.state.selectId,
+            finish: e => this.finish(e),
+            deleteRow: e => this.deleteRow(e),
+            selectRow: e => this.selectRow(e),
+        };
+        const extend = {
+            dragStart: (e, sourceId) => this.dragStart(e, sourceId),
+            dragOver: (e) => this.dragOver(e),
+            drop: (e, targetId) => this.drop(e, targetId),
+        };
+
         return (
             <div>
-                <Title
-                    onKeyDown = {this.handleKeyDown}
-                    onMoreDataClick = {this.handleMoreDataClick}
-                    onClearAllClick = {this.handleClearAllClick}
-                />
-                <Container
-                    todoList = {this.state.todoList}
-                    onCheckboxClick = {this.handleCheckboxClick}
-                    onRemoveClick = {this.handleRemoveClick}
-                    onDragStart = {this.handleDragStart}
-                    onDragOver = {this.handleDragOver}
-                    onDrop = {this.handleDrop}
-                />
+                <header>
+                    <Title
+                        addRow={e => this.addRow(e)}
+                        add_1000Rows={e => this.add_1000Rows(e)}
+                        clear={e => this.clear(e)}
+                    />
+                </header>
+                <section className={styles['show-container']}>
+                    <div className={styles['wrap']}>
+                        <Container todoList={todoList.filter(item => item.get('isFinished') === false)} isFinished={false} {...prop} {...extend} />
+                        <Container todoList={todoList.filter(item => item.get('isFinished') === true)} isFinished={true} {...prop} />
+                    </div>
+                </section>
                 <footer>
-                    <a href="###" onClick={this.handleClearAllClick}>clear all</a>
+                    <p onClick={this.clear}>clear all</p>
                 </footer>
             </div>
         )

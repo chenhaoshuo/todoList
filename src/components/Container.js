@@ -1,73 +1,43 @@
 import React from "react";
 import ListItem from "./ListItem";
 import styles from './Container.less';
+import {is} from 'immutable';
 
 class Container extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleLiClick = this.handleLiClick.bind(this);
-        this.state = {
-            whichLiClick: null,
+    shouldComponentUpdate(nextProps) {
+        const thisProps = this.props;
+        if(!is(thisProps.todoList, nextProps.todoList) || !is(thisProps.selectId, nextProps.selectId)){
+            return true;
         }
+        return false;
     }
 
-    handleLiClick(index) {
-        this.setState({ whichLiClick: index });
-    }
-    
     render() {
-        let doingListItems_len = 0;
-        let doneListItems_len = 0;
-        const doingListItems = this.props.todoList.map((todoList) => {
-            const index = todoList.index;
-            if (!todoList.isFinished) {
-                doingListItems_len++;
-                return <ListItem
-                    key = {index}
-                    value = {todoList}
-                    onCheckboxClick = {e => this.props.onCheckboxClick(index)}
-                    onRemoveClick = {e => this.props.onRemoveClick(index)}
-                    onClick = {e => this.handleLiClick(index)}
-                    whichLiClick = {this.state.whichLiClick}
-                    onDragStart = {e => this.props.onDragStart(index, e)}
-                    onDragOver = {this.props.onDragOver}
-                    onDrop = {e => this.props.onDrop(index, e)}
-                />
-            }
-        })
-        const doneListItems = this.props.todoList.map((todoList) => {
-            const index = todoList.index;
-            if (todoList.isFinished) {
-                doneListItems_len++;
-                return <ListItem
-                    key = {index}
-                    value = {todoList}
-                    onCheckboxClick = {e => this.props.onCheckboxClick(index)}
-                    onRemoveClick = {e => this.props.onRemoveClick(index)}
-                    onClick = {e => this.handleLiClick(index)}
-                    whichLiClick = {this.state.whichLiClick}
-                />
-            }
+        console.log('container.render');
+        const { todoList, finish, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
+        const items = todoList.map((item) => {
+            const id = item.get('id');
+            return <ListItem
+                key={id}
+                item={item}
+                isFinished={isFinished}
+                finish={e => finish(id)}
+                deleteRow={e => deleteRow(id)}
+                selectRow={e => selectRow(id)}
+                dragStart={(e, id) => dragStart(e, id)}
+                dragOver={e => dragOver(e)}
+                drop={(e, id) => drop(e, id)}
+                selectId={selectId}
+            />
         })
         return (
-            <section className={styles['show-container']}>
-                <div className={styles['wrap']}>
-                    <div className={styles['doingList']}>
-                        <div className={styles['doingList-title']}>
-                            <h2>正在进行</h2>
-                            <span>{doingListItems_len}</span>
-                        </div>
-                        <ol>{doingListItems}</ol>
-                    </div>
-                    <div className={styles['doneList']}>
-                        <div className={styles['doneList-title']}>
-                            <h2>已经完成</h2>
-                            <span>{doneListItems_len}</span>
-                        </div>
-                        <ol>{doneListItems}</ol>
-                    </div>
+            <div className={isFinished ? styles['doneList'] : styles['doingList']}>
+                <div className={styles['title']}>
+                    <h2>{isFinished ? "已经完成" : "正在完成"}</h2>
+                    <span>{items.size}</span>
                 </div>
-            </section>
+                <ol>{items}</ol>
+            </div>
         )
     }
 }
