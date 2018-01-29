@@ -13,30 +13,34 @@ class ListItem extends React.Component {
         if (!is(thisProps.item, nextProps.item)) {
             return true;
         }
-        if(!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), nextProps.selectId)){
+        if (!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), nextProps.selectId)) {
             return true;
         }
-        if(!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), thisProps.selectId)){
+        if (!is(thisProps.selectId, nextProps.selectId) && is(thisProps.item.get('id'), thisProps.selectId)) {
             return true;
         }
         return false;
     }
 
     render() {
-        console.log('ListItem.render');
-        const { item, finish, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
+        const { item, toggleTodo, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
+        // console.log('ListItem.render' + item);
         const id = item.get('id');
+        const props = {
+            index: id,
+            className: classNames({ [styles['li-click']]: id === selectId }),
+        }
         const interator = {
             draggable: "true",
             onDragStart: (e) => dragStart(e, id),
-            onDragOver: dragOver,
+            onDragOver: e => dragOver(e),
             onDrop: (e) => drop(e, id),
         }
         return (
-            <li index={item.get('id')} className={classNames({ [styles['li-click']]: item.get('id')===selectId })} {...(isFinished ? null : interator) }>
-                <input type="checkbox" defaultChecked={isFinished ? true : false} onClick={finish} />
-                <p onClick={selectRow}>{item.get('text')}</p>
-                <div className={styles['remove']} onClick={deleteRow}><span>-</span></div>
+            <li {...props} {...(!isFinished && interator) }>
+                <input type="checkbox" defaultChecked={isFinished} onClick={e => toggleTodo(e, id)} />
+                <p onClick={e => selectRow(e, id)}>{item.get('text')}</p>
+                <div className={styles['remove']} onClick={e => deleteRow(e, id)}><span>-</span></div>
             </li>
         )
     }

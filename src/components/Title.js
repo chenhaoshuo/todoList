@@ -33,7 +33,7 @@ class Title extends React.Component {
     }
 
     render() {
-        // console.log('title');
+        console.log('title');
         const {add_1000Rows, clear} = this.props;
         return (
             <section className={styles['todoList_title']}>
