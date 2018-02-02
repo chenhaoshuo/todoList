@@ -2,20 +2,25 @@ import React from "react";
 import { render } from "react-dom";
 import "./../static/reset.css";
 import TodoList from "./components/TodoList";
-import { applyMiddleware, createStore, bindActionCreators } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import todoApp from './reducers';
 import storage from './util/storage';
 import {fromJS} from 'immutable';
 import {createLogger} from 'redux-logger';
+import thunk from 'redux-thunk';
 
 let preloadedState = {
-    todoList: fromJS(storage.get("todoList") || []),
+    todoList: {
+        past: [],
+        present: fromJS(storage.get("todoList") || []),
+        future: []
+    },
     selectId: '',
 };
 const logger = createLogger();
 
-let store = createStore(todoApp, preloadedState, applyMiddleware(logger));
+let store = createStore(todoApp, preloadedState, applyMiddleware(thunk, logger));
 let rootElement = document.getElementById('root');
 
 render(

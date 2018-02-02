@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './Title.less';
-import { is } from 'immutable'
+import { is } from 'immutable';
+import UndoRedo from './UndoRedo';
 
 class Title extends React.Component {
     constructor(props) {
@@ -33,7 +34,7 @@ class Title extends React.Component {
     }
 
     render() {
-        console.log('title');
+        // console.log('title');
         const {add_1000Rows, clear} = this.props;
         return (
             <section className={styles['todoList_title']}>
@@ -47,6 +48,7 @@ class Title extends React.Component {
                 />
                 <button onClick={add_1000Rows}>新增千条数据</button>
                 <button onClick={clear}>clear All</button>
+                <UndoRedo />
             </section>
         )
     }

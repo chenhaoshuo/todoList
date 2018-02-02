@@ -32,7 +32,7 @@ class TodoList extends React.Component {
             drop: drop,
         };
         return (
-            <div>
+            <React.Fragment>
                 <header>
                     <Title
                         addRow={text => addTodo(text)}
@@ -49,14 +49,14 @@ class TodoList extends React.Component {
                 <footer>
                     <p onClick={clearAll}>clear all</p>
                 </footer>
-            </div>
+            </React.Fragment>
         )
     }
 }
 
 const mapStateToProps = state => {
     return {
-        todoList: state.todoList,
+        todoList: state.todoList.present,
         selectId: state.selectId,
     }
 }

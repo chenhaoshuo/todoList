@@ -3,8 +3,8 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    //devtool: "eval-source-map",
-    devtool: "eval",
+    devtool: "eval-source-map",
+    // devtool: "eval",
     entry: __dirname + "/src/index.js",
     output: {
         path: __dirname + "/build",
@@ -13,7 +13,7 @@ module.exports = {
     devServer: {
         contentBase: "./build",
         historyApiFallback: true,
-        inline: true
+        inline: true,
     },
     module: {
         rules: [

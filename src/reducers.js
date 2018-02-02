@@ -3,6 +3,7 @@ import { ADD_TODO, TOGGLE_TODO, DELETE_TODO, CLEAR_ALL, SELECT_ROW, ADD_1000_TOD
 import { Map, List } from 'immutable';
 import storage from './util/storage';
 import { newGuid } from './util/newGrid';
+import undoable, { distinctState } from 'redux-undo';
 
 function todos(state = [], action) {
     let index, todo;
@@ -60,5 +61,7 @@ function selectId(state = '', action) {
     }
 }
 
-const todoApp = combineReducers({ todoList: todos, selectId });
+const undoableTodos = undoable(todos, { filter: distinctState() });
+const todoApp = combineReducers({ todoList: undoableTodos, selectId });
+
 export default todoApp;
