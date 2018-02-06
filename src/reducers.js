@@ -4,6 +4,7 @@ import { Map, List } from 'immutable';
 import storage from './util/storage';
 import { newGuid } from './util/newGrid';
 import undoable, { distinctState } from 'redux-undo';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 function todos(state = [], action) {
     let index, todo;
@@ -31,10 +32,12 @@ function todos(state = [], action) {
             }
             return state;
         case ADD_1000_TODOS:
+            console.time('new 1000:')
             for (let i = 0; i < 1000; i++) {
                 id = newGuid();
                 state = state.push(Map({ text: id, id: id, isFinished: false }));
             }
+            console.timeEnd('new 1000:')
             storage.set("todoList", state);
             return state;
         case DROP:

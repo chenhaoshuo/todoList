@@ -122,8 +122,8 @@ body {
   border-radius: 50%;
   text-shadow: 2px 2px 2px #fff;
 }
-.Container__doingList-zd7hC ol li,
-.Container__doneList-3mMOU ol li {
+.Container__doingList-zd7hC li,
+.Container__doneList-3mMOU li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -148,11 +148,25 @@ body {
   flex: 1;
   text-overflow: ellipsis;
 }
-.Container__doneList-3mMOU ol li {
+.Container__doneList-3mMOU li {
   border-left: 5px solid #b3b3b3;
 }
 .Container__doneList-3mMOU {
   opacity: 0.5;
+}
+.fade-enter {
+  opacity: 0.01;
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 800ms ease-in;
 }
 /*动效*/
 .TodoList__linear-out-17sUj {
