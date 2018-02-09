@@ -1,7 +1,7 @@
 import React from "react";
 import styles from './Title.less';
-import { is } from 'immutable';
 import UndoRedo from './UndoRedo';
+import PropTypes from 'prop-types';
 
 class Title extends React.Component {
     constructor(props) {
@@ -29,13 +29,13 @@ class Title extends React.Component {
                 return;
             }
             this.setState({ value: '' });
-            this.props.addRow(text);
+            this.props.addTodo(text);
         }
     }
 
     render() {
-        // console.log('title');
-        const {add_1000Rows, clear} = this.props;
+        console.log('title');
+        const {add_1000Todos, clear} = this.props;
         return (
             <section className={styles['todoList_title']}>
                 <h2>ToDoList</h2>
@@ -46,7 +46,7 @@ class Title extends React.Component {
                     onChange={e => this.onChange(e)}
                     onKeyDown={e => this.onKeyDown(e)}
                 />
-                <button onClick={add_1000Rows}>新增千条数据</button>
+                <button onClick={add_1000Todos}>新增千条数据</button>
                 <button onClick={clear}>clear All</button>
                 <UndoRedo />
             </section>

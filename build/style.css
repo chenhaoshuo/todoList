@@ -159,14 +159,14 @@ body {
 }
 .fade-enter.fade-enter-active {
   opacity: 1;
-  transition: opacity 1000ms ease-in;
+  transition: opacity 300ms ease-in;
 }
 .fade-exit {
   opacity: 1;
 }
 .fade-exit.fade-exit-active {
   opacity: 0.01;
-  transition: opacity 800ms ease-in;
+  transition: opacity 100ms ease-in;
 }
 /*动效*/
 .TodoList__linear-out-17sUj {

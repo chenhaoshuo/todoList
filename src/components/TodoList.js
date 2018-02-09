@@ -7,8 +7,21 @@ import Title from "./Title";
 import Container from "./Container";
 import styles from "./TodoList.less";
 import classNames from "classnames";
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 class TodoList extends React.Component {
+    static propTypes = {
+        todoList: ImmutablePropTypes.list,
+        selectId: PropTypes.string,
+        addTodo: PropTypes.func,
+        add_1000Todos: PropTypes.func,
+        clearAll: PropTypes.func,
+        toggleTodo: PropTypes.func,
+        deleteTodo: PropTypes.func,
+        selectRow: PropTypes.func,
+        drop: PropTypes.func,
+    };
 
     dragStart(e, sourceId) {
         e.dataTransfer.setData("sourceId", sourceId);
@@ -35,8 +48,8 @@ class TodoList extends React.Component {
             <React.Fragment>
                 <header>
                     <Title
-                        addRow={text => addTodo(text)}
-                        add_1000Rows={add_1000Todos}
+                        addTodo={text => addTodo(text)}
+                        add_1000Todos={add_1000Todos}
                         clear={clearAll}
                     />
                 </header>

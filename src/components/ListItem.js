@@ -2,10 +2,20 @@ import React from "react";
 import styles from "./ListItem.less";
 import classNames from "classnames";
 import { is } from "immutable"
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 class ListItem extends React.Component {
-    constructor(props) {
-        super(props)
+    static propTypes = {
+        item: ImmutablePropTypes.map,
+        selectId: PropTypes.string,
+        isFinished: PropTypes.bool,
+        toggleTodo: PropTypes.func,
+        deleteTodo: PropTypes.func,
+        selectRow: PropTypes.func,
+        dragStart: PropTypes.func,
+        dragOver: PropTypes.func,
+        drop: PropTypes.func,
     }
 
     shouldComponentUpdate(nextProps) {
@@ -23,8 +33,8 @@ class ListItem extends React.Component {
     }
 
     render() {
-        const { item, toggleTodo, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
         // console.log('ListItem.render' + item);
+        const { item, selectId, isFinished, toggleTodo, deleteRow, selectRow, dragStart, dragOver, drop } = this.props;
         const id = item.get('id');
         const props = {
             index: id,

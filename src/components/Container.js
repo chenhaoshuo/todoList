@@ -2,11 +2,24 @@ import React from "react";
 import ListItem from "./ListItem";
 import styles from './Container.less';
 import { is } from 'immutable';
-import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import Fade from './Fade';
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 class Container extends React.Component {
+    static propTypes = {
+        todoList: ImmutablePropTypes.list,
+        selectId: PropTypes.string,
+        isFinished: PropTypes.bool,
+        toggleTodo: PropTypes.func,
+        deleteTodo: PropTypes.func,
+        selectRow: PropTypes.func,
+        dragStart: PropTypes.func,
+        dragOver: PropTypes.func,
+        drop: PropTypes.func,
+    }
+
     shouldComponentUpdate(nextProps) {
         const thisProps = this.props;
         if (!is(thisProps.todoList, nextProps.todoList) || !is(thisProps.selectId, nextProps.selectId)) {
@@ -17,7 +30,7 @@ class Container extends React.Component {
 
     render() {
         // console.log('container.render');
-        const { todoList, toggleTodo, deleteRow, selectRow, dragStart, dragOver, drop, isFinished, selectId } = this.props;
+        const { todoList, selectId, isFinished, toggleTodo, deleteRow, selectRow, dragStart, dragOver, drop } = this.props;
         const items = todoList.map((item) => {
             const id = item.get('id');
             return (<Fade key={id}>
@@ -46,11 +59,6 @@ class Container extends React.Component {
             </div>
         )
     }
-}
-
-Container.propTypes = {
-    isFinished: PropTypes.bool,
-    selectId: PropTypes.string,
 }
 
 export default Container;
